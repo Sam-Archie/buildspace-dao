@@ -1,11 +1,17 @@
-import { useAddress, useMetamask, useEditionDrop } from "@thirdweb-dev/react";
-import { useState, useEffect } from "react";
+import {
+  useAddress,
+  useMetamask,
+  useEditionDrop,
+  useToken,
+} from "@thirdweb-dev/react";
+import { useState, useEffect, useMemo } from "react";
 
 const App = () => {
   // Use the hooks thirdweb give us.
   const address = useAddress();
   const connectWithMetamask = useMetamask();
   console.log("👋 Address:", address);
+  const token = useToken(process.env.ERC20_CONTRACT_ADDRESS);
 
   // Initialize our editionDrop contract
   const editionDrop = useEditionDrop(
