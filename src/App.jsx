@@ -4,7 +4,9 @@ import {
   useEditionDrop,
   useToken,
   useVote,
+  useNetwork,
 } from "@thirdweb-dev/react";
+import { ChainId } from "@thirdweb-dev/sdk";
 
 import { useState, useEffect, useMemo } from "react";
 import { AddressZero } from "@ethersproject/constants";
@@ -12,6 +14,7 @@ import { AddressZero } from "@ethersproject/constants";
 const App = () => {
   // Use the hooks thirdweb give us.
   const address = useAddress();
+  const network = useNetwork();
   const connectWithMetamask = useMetamask();
   console.log("👋 Address:", address);
   const token = useToken("0x8fFaf56A1adBCe87Ad2b8557c84E5f830A1f0CA1");
@@ -184,6 +187,18 @@ const App = () => {
     }
   };
 
+  if (address && network?.[0].data.chain.id !== ChainId.Mumbai) {
+    return (
+      <div className="unsupported-network">
+        <h2>Please connect to Mumbai</h2>
+        <p>
+          This dapp only works on the Mumai network, please switch networks in
+          your connected wallet.
+        </p>
+      </div>
+    );
+  }
+
   // This is the case where the user hasn't connected their wallet
   // to your web app. Let them call connectWallet.
   if (!address) {
@@ -200,7 +215,7 @@ const App = () => {
   if (hasClaimedNFT) {
     return (
       <div className="member-page">
-        <h1>🍪DAO Member Page</h1>
+        <h1>Share Member Page</h1>
         <p>Congratulations on being a member</p>
         <div>
           <div>
